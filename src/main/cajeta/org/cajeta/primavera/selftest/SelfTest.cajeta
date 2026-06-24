@@ -1,18 +1,18 @@
-package org.cajeta.cazo.selftest;
+package org.cajeta.primavera.selftest;
 
-import org.cajeta.cazo.context.RequestScope;
+import org.cajeta.primavera.context.RequestScope;
 
 /**
- * cazo's runtime self-test — proves the request scope behaves across the
+ * primavera's runtime self-test — proves the request scope behaves across the
  * enter / store / lookup / teardown lifecycle. Self-contained (no cajeta-unit
- * dependency yet); the richer cazo test helpers built ON cajeta-unit are the
- * next increment (see plan/cazo-plan.md).
+ * dependency yet); the richer primavera test helpers built ON cajeta-unit are the
+ * next increment (see plan/primavera-plan.md).
  *
  * Failures are accumulated through the static `check` helper rather than a
  * captured local, so the closure passed to `RequestScope.enter` mutates static
  * state directly (no local capture).
  *
- * Entry: `org.cajeta.cazo.selftest.SelfTest.run` (returns 0 = all green).
+ * Entry: `org.cajeta.primavera.selftest.SelfTest.run` (returns 0 = all green).
  */
 public class SelfTest {
     static int32 failures;
@@ -26,9 +26,9 @@ public class SelfTest {
 
     public static int32 run() {
         SelfTest.failures = 0;
-        System.stdout.println("== cazo self-tests (request scope over FiberLocal) ==");
+        System.stdout.println("== primavera self-tests (request scope over FiberLocal) ==");
 
-        String key = "org.cajeta.cazo.selftest.Bean";
+        String key = "org.cajeta.primavera.selftest.Bean";
 
         // Outside any request, no scope is active and lookups are inert.
         SelfTest.check(RequestScope.isActive() == false, "no scope active before enter");
@@ -56,10 +56,10 @@ public class SelfTest {
         SelfTest.check(RequestScope.isActive() == false, "no scope active after enter returns");
 
         if (SelfTest.failures == 0) {
-            System.stdout.println("  all cazo self-tests passed");
+            System.stdout.println("  all primavera self-tests passed");
             return 0;
         }
-        System.stdout.println("  cazo self-tests FAILED");
+        System.stdout.println("  primavera self-tests FAILED");
         return 1;
     }
 }

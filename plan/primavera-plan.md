@@ -1,11 +1,11 @@
-# cazo roadmap
+# primavera roadmap
 
-cazo is Cajeta's opinionated enterprise framework — the **policy** layer over
+primavera is Cajeta's opinionated enterprise framework — the **policy** layer over
 the language's neutral **mechanism** (`@Inject`, `FiberLocal`, reflection). This
 plan tracks the increments from today's request-scope foundation to a full
 web/service framework with first-class testability.
 
-## Design principle: mechanism in the language, policy in cazo
+## Design principle: mechanism in the language, policy in primavera
 
 The language ships primitives that don't presume a framework:
 
@@ -14,9 +14,9 @@ The language ships primitives that don't presume a framework:
   across both fan-out and handoff.
 - reflection — construct + invoke by metadata.
 
-cazo composes those into an opinion about enterprise services. Anyone who
+primavera composes those into an opinion about enterprise services. Anyone who
 dislikes the opinion keeps the primitives and builds their own framework — the
-core never forces cazo. (`@Component` and the AOP annotations are *recognized by
+core never forces primavera. (`@Component` and the AOP annotations are *recognized by
 the compiler today* as an interim; their spec/docs now live here in
 `docs/AspectModel.md`, and the long-term aim is to re-home their
 implementation behind a language-level annotation-processing extension point so
@@ -24,8 +24,8 @@ the core carries no framework policy. See the cajeta-two side for that work.)
 
 ## Phase 1 — Request scope ✅ (shipped v0.1.0)
 
-- `org.cajeta.cazo.context.ScopeMap` — owning, name-keyed per-scope bean store.
-- `org.cajeta.cazo.context.RequestScope` — request scope over `FiberLocal`,
+- `org.cajeta.primavera.context.ScopeMap` — owning, name-keyed per-scope bean store.
+- `org.cajeta.primavera.context.RequestScope` — request scope over `FiberLocal`,
   correct under both fiber-per-request and completion-port executors.
 - Runtime self-test (`selftest/SelfTest`) — enter / store / lookup / teardown.
 
@@ -82,11 +82,11 @@ it is **not** a `FiberLocal` binding. Build:
 - Scope propagation correct under both (Phase 1's FiberLocal foundation already
   provides the carry-across-handoff; the executor wires it at the boundary).
 
-## Phase 5 — cazo-side unit-test helpers (on cajeta-unit)
+## Phase 5 — primavera-side unit-test helpers (on cajeta-unit)
 
-The test capability for cazo's features lives **in cazo**, built on the neutral
+The test capability for primavera's features lives **in primavera**, built on the neutral
 [cajeta-unit](https://github.com/jklappenbach/cajeta-unit) framework but knowing
-cazo's internals:
+primavera's internals:
 
 - mock `@Request` / `@Session`-scoped beans; seed request/session context.
 - run a handler under a **chosen executor** (thread-per-request vs
@@ -106,11 +106,11 @@ cazo's internals:
 - **Once-guard** the lazy `FiberLocal` key init against a first-touch race.
 - **Wire the real dependencies** (`org.cajeta.logging` runtime, `org.cajeta.unit`
   dev) in `cajeta.json` once they are resolvable (registry publish or
-  path-dependency); cazo's web/component layer logs through cajeta-logging.
+  path-dependency); primavera's web/component layer logs through cajeta-logging.
 
 ## Dependency on cajeta-two work
 
 - A linker / build-system **dead-code-elimination** pass so a service links only
-  the cazo classes it uses (embedded/robotics targets must fit an EPROM). Today
+  the primavera classes it uses (embedded/robotics targets must fit an EPROM). Today
   unused classes are pinned by the reflection registry; this is tracked on the
-  cajeta-two side, and cazo's per-feature modularity assumes it lands.
+  cajeta-two side, and primavera's per-feature modularity assumes it lands.

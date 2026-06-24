@@ -1,4 +1,4 @@
-package org.cajeta.cazo.context;
+package org.cajeta.primavera.context;
 
 import cajeta.concurrent.FiberLocal;
 
@@ -6,7 +6,7 @@ import cajeta.concurrent.FiberLocal;
  * Request scope — the per-request bag of @Component beans, bound to the
  * *logical request* rather than to any thread or fiber.
  *
- * Built on {@Link FiberLocal}, which is exactly why cazo can serve both
+ * Built on {@Link FiberLocal}, which is exactly why primavera can serve both
  * webserver concurrency models with one mechanism:
  *
  *  - **thread / fiber-per-request** — the request owns one fiber start to
@@ -21,7 +21,7 @@ import cajeta.concurrent.FiberLocal;
  *    `FiberContext` snapshot. The scope follows the request across thread
  *    hops; it never leaks across requests.
  *
- * cazo's executor (docs/Concurrency.md) calls `enter` once per accepted
+ * primavera's executor (docs/Concurrency.md) calls `enter` once per accepted
  * request; handler code anywhere on the call path reaches the active bag via
  * `current()` with no parameter threading.
  *
@@ -49,7 +49,7 @@ public class RequestScope {
     // calling a method on a field neither moves nor drops it.
     //
     // (v1 limitation: the lazy init is not yet once-guarded against a
-    // first-touch race between fibers — tracked in plan/cazo-plan.md.)
+    // first-touch race between fibers — tracked in plan/primavera-plan.md.)
     static FiberLocal<ScopeMap> SCOPE;
 
     static void ensure() {

@@ -1,6 +1,6 @@
 # Request scope
 
-cazo's request scope is the per-request bag of framework-managed beans. It is
+primavera's request scope is the per-request bag of framework-managed beans. It is
 the runtime that makes request-scoped `@Component` instances possible: created
 once per request, reachable ambiently anywhere on the call path, and dropped
 when the request ends.
@@ -9,7 +9,7 @@ when the request ends.
 
 A request-scoped bean must be isolated per request and reachable without
 threading a context parameter through every call. The naive implementation — a
-thread-local — is correct *only* under thread-per-request. cazo keys on the
+thread-local — is correct *only* under thread-per-request. primavera keys on the
 logical request instead, by building on `cajeta.concurrent.FiberLocal`. That
 single choice makes one mechanism correct under both webserver concurrency
 models:
@@ -24,7 +24,7 @@ primitive, not hard-wired to threads: the primitive already solved propagation.
 
 ## API
 
-`org.cajeta.cazo.context.RequestScope` (all static):
+`org.cajeta.primavera.context.RequestScope` (all static):
 
 | Method | Effect |
 |---|---|
@@ -59,7 +59,7 @@ request.
 > a `ScopeMap` are **not** freed at request end; their destructors do not run.
 > Harmless for a short-lived process, wrong for a long-running server. The fix is
 > a language-level owning-collection change (compiler-synthesized element drop),
-> tracked in `plan/cazo-plan.md`. Don't rely on bean teardown at scope end yet.
+> tracked in `plan/primavera-plan.md`. Don't rely on bean teardown at scope end yet.
 
 ## Implementation notes & v1 limitations
 
@@ -73,8 +73,8 @@ request.
   fixed upstream in cajeta-two, so the read-into-a-local workaround was removed.)
 - **First-touch race.** The lazy init is not yet once-guarded against two fibers
   initializing the key simultaneously. Single-threaded use is unaffected; the
-  guard is tracked in `plan/cazo-plan.md`.
+  guard is tracked in `plan/primavera-plan.md`.
 - **Session scope** is not request scope. Sessions outlive a single request and
   are shared across a client's requests, so they need an owning, expiring,
   concurrency-safe store rather than a per-request binding — designed as the
-  next increment (`plan/cazo-plan.md`), not shipped here.
+  next increment (`plan/primavera-plan.md`), not shipped here.

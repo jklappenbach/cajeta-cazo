@@ -1,7 +1,7 @@
-# cazo
+# primavera
 
 An opinionated enterprise framework for [Cajeta](https://github.com/jklappenbach/cajeta) —
-roughly what Spring is to Java. cazo is built **on** the language's neutral
+roughly what Spring is to Java. primavera is built **on** the language's neutral
 primitives (`@Inject`, `FiberLocal`, reflection); it ships **policy** —
 component lifecycle, request/session scope, and (coming) a web request/session
 model — so the core language stays small and other frameworks remain free to
@@ -9,9 +9,9 @@ innovate their own patterns.
 
 > **Why a separate library?** Cajeta the *language* ships mechanism: dependency
 > injection points (`@Inject`), ambient per-request state (`FiberLocal`),
-> reflection. cazo ships an *opinion* about how to assemble those into
-> enterprise services. If cazo's opinion isn't yours, you keep the primitives
-> and build your own — nothing in the core forces cazo on you.
+> reflection. primavera ships an *opinion* about how to assemble those into
+> enterprise services. If primavera's opinion isn't yours, you keep the primitives
+> and build your own — nothing in the core forces primavera on you.
 
 ## Status — v0.1.0 (early)
 
@@ -21,9 +21,9 @@ innovate their own patterns.
 | Component model (`@Component` / `@Aspect` / lifecycle) — spec & docs | ✅ relocated here (`docs/AspectModel.md`); annotations are compiler-recognized today |
 | Session scope (`SessionScope` + a session store) | ▢ designed, next increment |
 | Web request/session model + pluggable executor | ▢ planned |
-| cazo-side unit-test helpers (mock `@Request`/`@Session`, both executors) | ▢ planned (builds on [cajeta-unit](https://github.com/jklappenbach/cajeta-unit)) |
+| primavera-side unit-test helpers (mock `@Request`/`@Session`, both executors) | ▢ planned (builds on [cajeta-unit](https://github.com/jklappenbach/cajeta-unit)) |
 
-See [`plan/cazo-plan.md`](plan/cazo-plan.md) for the roadmap.
+See [`plan/primavera-plan.md`](plan/primavera-plan.md) for the roadmap.
 
 ## Request scope
 
@@ -42,7 +42,7 @@ serves both webserver concurrency models:
   thread hops and never leaks across requests.
 
 ```cajeta
-import org.cajeta.cazo.context.RequestScope;
+import org.cajeta.primavera.context.RequestScope;
 
 RequestScope.enter(() -> {
     // current() is live for the whole call tree — no parameter threading.
@@ -63,15 +63,15 @@ Requires the Cajeta toolchain on `PATH` (or invoke the versioned binary
 directly):
 
 ```
-cajeta build    # compile to build/archive/org.cajeta.cazo-<version>.cja
+cajeta build    # compile to build/archive/org.cajeta.primavera-<version>.cja
 cajeta test     # build + run the runtime self-tests (fails the build on any failure)
 ```
 
 ## Documentation
 
 - [`docs/RequestScope.md`](docs/RequestScope.md) — request scope: model, ownership, concurrency.
-- [`docs/AspectModel.md`](docs/AspectModel.md) — component model + AOP spec (relocated from the Cajeta stdlib docs; cazo is its home).
-- [`plan/cazo-plan.md`](plan/cazo-plan.md) — roadmap.
+- [`docs/AspectModel.md`](docs/AspectModel.md) — component model + AOP spec (relocated from the Cajeta stdlib docs; primavera is its home).
+- [`plan/primavera-plan.md`](plan/primavera-plan.md) — roadmap.
 
 ## License
 

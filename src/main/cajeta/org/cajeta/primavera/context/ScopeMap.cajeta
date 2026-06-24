@@ -1,4 +1,4 @@
-package org.cajeta.cazo.context;
+package org.cajeta.primavera.context;
 
 import cajeta.collection.ArrayList;
 
@@ -13,14 +13,14 @@ import cajeta.collection.ArrayList;
  *
  * KNOWN LIMITATION (v1): `ArrayList<T>` does NOT drop its elements when it
  * drops (verified — cajeta collections are non-owning today; see the memory-
- * model note in plan/cazo-plan.md). So scoped beans are currently **leaked** at
+ * model note in plan/primavera-plan.md). So scoped beans are currently **leaked** at
  * request/session end rather than freed. This is harmless for short-lived
  * processes but wrong for a long-running server, and is blocked on a language-
  * level owning-collection fix (compiler-synthesized element drop). Do not rely
  * on bean destructors running at scope end yet.
  *
  * This is the runtime backing for request- and session-scoped @Component
- * beans (cazo's component lifecycle, documented in docs/Components.md).
+ * beans (primavera's component lifecycle, documented in docs/Components.md).
  */
 public class ScopeMap {
     ArrayList<String> keys;

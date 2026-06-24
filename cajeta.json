@@ -1,9 +1,9 @@
 {
-    // cajeta-cazo — best-of-breed enterprise framework for Cajeta.
+    // cajeta-primavera — best-of-breed enterprise framework for Cajeta.
     //
-    // cazo is to Cajeta roughly what Spring is to Java: an opinionated layer
+    // primavera is to Cajeta roughly what Spring is to Java: an opinionated layer
     // built ON the language's neutral primitives (@Inject, FiberLocal,
-    // reflection). The LANGUAGE ships mechanism; cazo ships POLICY — component
+    // reflection). The LANGUAGE ships mechanism; primavera ships POLICY — component
     // lifecycle, request/session scope, web request/session models — so the
     // core stays small and other frameworks remain free to innovate.
     //
@@ -13,9 +13,9 @@
     // is headed toward.
 
     "details": {
-        "name":               "org.cajeta.cazo",
+        "name":               "org.cajeta.primavera",
         "version":            "0.1.0",
-        "description":        "cazo — enterprise framework for Cajeta (components, web, request/session scope)",
+        "description":        "primavera — enterprise framework for Cajeta (components, web, request/session scope)",
         "license":            "Apache-2.0",
         "authors":            ["Julian Klappenbach"],
         "cajeta-lang-version": "1.0"
@@ -55,10 +55,10 @@
         },
 
         "test": {
-            "description": "Build + run cazo's unit tests (fails on any failure)",
+            "description": "Build + run primavera's unit tests (fails on any failure)",
             "actions": [
                 { "action": "build", "flavor": "debug",
-                  "entry-method": "org.cajeta.cazo.selftest.SelfTest.run",
+                  "entry-method": "org.cajeta.primavera.selftest.SelfTest.run",
                   "id": "testbin" },
                 { "action": "test", "input": "${testbin.path}" }
             ]
