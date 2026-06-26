@@ -1,26 +1,30 @@
 # primavera
 
 An opinionated enterprise framework for [Cajeta](https://github.com/jklappenbach/cajeta) —
-roughly what Spring is to Java. primavera is built **on** the language's neutral
-primitives (`@Inject`, `FiberLocal`, reflection); it ships **policy** —
-component lifecycle, request/session scope, and (coming) a web request/session
-model — so the core language stays small and other frameworks remain free to
-innovate their own patterns.
+roughly what Spring is to Java. primavera is built **on** the language's core DI
+substrate (`@Component`, `@Inject`, `@Factory`, the compile-time graph) and neutral
+primitives (`FiberLocal`, reflection); it ships **policy** — request/session scope,
+stereotypes, deployment profiles, and (coming) a web request/session model — so the
+core language stays small and other frameworks remain free to innovate their own
+patterns.
 
-> **Why a separate library?** Cajeta the *language* ships mechanism: dependency
-> injection points (`@Inject`), ambient per-request state (`FiberLocal`),
-> reflection. primavera ships an *opinion* about how to assemble those into
-> enterprise services. If primavera's opinion isn't yours, you keep the primitives
-> and build your own — nothing in the core forces primavera on you.
+> **Why a separate library?** Cajeta the *language* ships the DI **substrate** —
+> `@Component`/`@Inject`/`@Factory`, the graph, scopes, and lifecycle (one
+> indivisible mechanism; see the stdlib `docs/specification/lang/AspectModel.md`) —
+> plus ambient per-request state (`FiberLocal`) and reflection. primavera ships an
+> *opinion* about how to assemble those into enterprise services. If primavera's
+> opinion isn't yours, you keep the substrate and build your own — nothing in the
+> core forces primavera on you.
 
 ## Status — v0.1.0 (early)
 
 | Capability | State |
 |---|---|
 | **Request scope** over `FiberLocal` (`RequestScope`, `ScopeMap`) | ✅ built, self-tested |
-| Component model (`@Component` / `@Aspect` / lifecycle) — spec & docs | ✅ relocated here (`docs/AspectModel.md`); annotations are compiler-recognized today |
+| DI substrate (`@Component` / `@Inject` / `@Factory` / aspects) | ↳ **core stdlib** — primavera consumes it (`docs/specification/lang/AspectModel.md`); not owned here |
 | Session scope (`SessionScope` + a session store) | ▢ designed, next increment |
-| Web request/session model + pluggable executor | ▢ planned |
+| Web request/session model + `@RestServer` + pluggable executor | ▢ planned |
+| Stereotypes (`@Repository` / `@Service`) + deployment `@Profile` | ▢ planned (policy over the core substrate) |
 | primavera-side unit-test helpers (mock `@Request`/`@Session`, both executors) | ▢ planned (builds on [cajeta-unit](https://github.com/jklappenbach/cajeta-unit)) |
 
 See [`plan/primavera-plan.md`](plan/primavera-plan.md) for the roadmap.
@@ -70,7 +74,9 @@ cajeta test     # build + run the runtime self-tests (fails the build on any fai
 ## Documentation
 
 - [`docs/RequestScope.md`](docs/RequestScope.md) — request scope: model, ownership, concurrency.
-- [`docs/AspectModel.md`](docs/AspectModel.md) — component model + AOP spec (relocated from the Cajeta stdlib docs; primavera is its home).
+- [`docs/AspectModel.md`](docs/AspectModel.md) — pointer: the component model + AOP substrate is **core stdlib**; primavera adds the policy layer on top.
+- [`docs/Factory.md`](docs/Factory.md) — `@Factory` design rationale (normative spec is the stdlib): third-party types, assisted args, init-beyond-ctor.
+- [`docs/Testing.md`](docs/Testing.md) — how DI overrides work under test: the four override layers + scope seeding.
 - [`plan/primavera-plan.md`](plan/primavera-plan.md) — roadmap.
 
 ## License

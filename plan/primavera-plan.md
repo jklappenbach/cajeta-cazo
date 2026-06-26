@@ -5,22 +5,29 @@ the language's neutral **mechanism** (`@Inject`, `FiberLocal`, reflection). This
 plan tracks the increments from today's request-scope foundation to a full
 web/service framework with first-class testability.
 
-## Design principle: mechanism in the language, policy in primavera
+## Design principle: substrate in the language, policy in primavera
 
-The language ships primitives that don't presume a framework:
+The language ships the DI **substrate** and neutral primitives — one indivisible,
+compiler-owned mechanism:
 
-- `@Inject` — the one DI primitive that stays in the language.
-- `FiberLocal` / `FiberContext` — ambient per-request state that propagates
-  across both fan-out and handoff.
+- `@Component` / `@Inject` / `@Factory` — declare / consume / produce nodes in the
+  compile-time DI graph, with identity scopes and lifecycle. **Core stdlib**
+  (`cajeta.aot`); spec at the stdlib `docs/specification/lang/AspectModel.md`.
+- Aspect weaving (`@Aspect` and the advice family) — **core stdlib**.
+- `FiberLocal` / `FiberContext` — ambient per-request state that propagates across
+  both fan-out and handoff.
 - reflection — construct + invoke by metadata.
 
-primavera composes those into an opinion about enterprise services. Anyone who
-dislikes the opinion keeps the primitives and builds their own framework — the
-core never forces primavera. (`@Component` and the AOP annotations are *recognized by
-the compiler today* as an interim; their spec/docs now live here in
-`docs/AspectModel.md`, and the long-term aim is to re-home their
-implementation behind a language-level annotation-processing extension point so
-the core carries no framework policy. See the cajeta-two side for that work.)
+primavera composes those into an opinion about enterprise services — request/session
+scope, the web model (`@RestServer`), stereotypes, deployment profiles, and the test
+harness. Anyone who dislikes the opinion keeps the substrate and builds their own
+framework on the same `@Component`/`@Inject`/`@Factory` graph — the core never forces
+primavera, and every library speaks one DI vocabulary with no framework dependency.
+
+(The long-term annotation-processing / codegen extension point lets primavera or any
+framework plug its *policy* — stereotypes, scopes, web — into the compiler without
+core changes. It does **not** move the DI substrate out of core; the substrate is
+indivisible. Tracked on the cajeta-two side.)
 
 ## Phase 1 — Request scope ✅ (shipped v0.1.0)
 
@@ -70,12 +77,14 @@ it is **not** a `FiberLocal` binding. Build:
 - Wire request/session scope to `@Component` allocation modes so a request- or
   session-scoped component resolves through `RequestScope` / `SessionScope`
   get-or-create instead of the singleton path.
-- Reconcile with `ALLOCATE_*` modes documented in `docs/AspectModel.md`
-  (`CALL_SCOPE` is currently stubbed in the compiler).
+- Reconcile with the `ALLOCATE_*` modes documented in the **stdlib**
+  `docs/specification/lang/AspectModel.md` (`CALL_SCOPE` is currently stubbed in
+  the compiler). Request scope is the new, primavera-owned scope layered over them.
 
 ## Phase 4 — Web request/session model + pluggable executor
 
-- HTTP request/response model; handler API.
+- HTTP request/response model; handler API; **`@RestServer`** (the web entry-point
+  stereotype that binds handlers to routes and stands up the executor).
 - **Pluggable executor** behind one handler API:
   - fiber-per-request (simple, scales on Cajeta fibers);
   - threadpool-over-completion-ports (async I/O, max throughput).

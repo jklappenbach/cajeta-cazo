@@ -2,9 +2,10 @@
     // cajeta-primavera — best-of-breed enterprise framework for Cajeta.
     //
     // primavera is to Cajeta roughly what Spring is to Java: an opinionated layer
-    // built ON the language's neutral primitives (@Inject, FiberLocal,
-    // reflection). The LANGUAGE ships mechanism; primavera ships POLICY — component
-    // lifecycle, request/session scope, web request/session models — so the
+    // built ON the language's core DI substrate (@Component, @Inject, @Factory,
+    // the compile-time graph) and neutral primitives (FiberLocal, reflection).
+    // The LANGUAGE ships the substrate; primavera ships POLICY — request/session
+    // scope, stereotypes, deployment profiles, web request/session models — so the
     // core stays small and other frameworks remain free to innovate.
     //
     // This is a LIBRARY project: no `entry-method`, compiles to a reusable
