@@ -81,15 +81,22 @@ it is **not** a `FiberLocal` binding. Build:
   `docs/specification/lang/AspectModel.md` (`CALL_SCOPE` is currently stubbed in
   the compiler). Request scope is the new, primavera-owned scope layered over them.
 
-## Phase 4 — Web request/session model + pluggable executor
+## Phase 4 — Web request/session model (policy over `cajeta-http`)
 
-- HTTP request/response model; handler API; **`@RestServer`** (the web entry-point
-  stereotype that binds handlers to routes and stands up the executor).
-- **Pluggable executor** behind one handler API:
-  - fiber-per-request (simple, scales on Cajeta fibers);
-  - threadpool-over-completion-ports (async I/O, max throughput).
-- Scope propagation correct under both (Phase 1's FiberLocal foundation already
-  provides the carry-across-handoff; the executor wires it at the boundary).
+The HTTP engine is **not** primavera's — it is the
+[`cajeta-http`](https://github.com/jklappenbach/cajeta-http) library
+(HTTP/1.1·2·3 + WS + SSE) over the stdlib `cajeta.io.net` transport. Phase 4 is
+the *policy* primavera layers on top:
+
+- **`@RestServer` / `@Rest` endpoints** — annotation-driven routing (bind handler
+  methods to verb+path) and **automatic serde** to/from a typed object model, over
+  cajeta-http's imperative `HttpServer`/`Router`.
+- **Request/session scope binding** — wire the request scope (Phase 1) to the
+  handler boundary so request-scoped `@Component`s resolve per request.
+- **Executor choice is inherited**, not reinvented: cajeta-http runs on
+  `cajeta.io.net`'s accept models (fiber-per-connection / shared-pool). Scope
+  propagation is correct under both (Phase 1's `FiberLocal` carries across the
+  handoff; the boundary wires it in).
 
 ## Phase 5 — primavera-side unit-test helpers (on cajeta-unit)
 

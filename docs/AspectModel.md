@@ -27,8 +27,10 @@ primavera is the opinion assembled over the core substrate:
 
 - **Request / session scope** — non-identity scopes keyed on the logical request,
   over `cajeta.concurrent.FiberLocal`. See [`RequestScope.md`](RequestScope.md).
-- **Web model** — HTTP request/response, a handler API, `@RestServer`, and a
-  pluggable executor (fiber-per-request vs threadpool-over-completion-ports).
+- **Web model** — `@RestServer` / `@Rest` annotation-driven endpoints + auto-serde,
+  layered on the [`cajeta-http`](https://github.com/jklappenbach/cajeta-http) library
+  (HTTP/WS/SSE over the `cajeta.io.net` transport). primavera owns the *policy*, not
+  the HTTP engine or the executor (inherited from `cajeta.io.net`).
 - **Stereotypes** — `@Repository`, `@Service` (named roles over `@Component`).
 - **Deployment profiles** — `@Profile("prod"|"test"|...)`.
 - **Test harness** — `@TestComponent` overrides + request-scope seeding over the
