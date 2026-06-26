@@ -129,6 +129,9 @@ rules carry over from the substrate.
 
 The missing Tier-1 primitive, serving enterprise externalized config *and* ML/DS
 experiment config. Compile-time-bound where possible, runtime sources behind it.
+**Full spec: [`Configuration.md`](../Configuration.md)** (sources/precedence,
+the compile-time-vs-runtime contract, frozen-mode for embedded, interpolation +
+secrets, conditional wiring, ML experiment composition, the effective-config dump).
 
 ```cajeta
 @Component class Server {
